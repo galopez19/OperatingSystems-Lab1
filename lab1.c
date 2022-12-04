@@ -6,30 +6,47 @@
  * Implement your solution in thi file
  *
  */
-char *line[MAX_LINE_LEN];
-char *explode;
 
 char* readString(char* fileName)
 {
-    FILE*ptr = fopen(fileName,"r");
-    fgets(line,99, ptr);
-    return line;
+    FILE *file;
+    file = fopen(fileName, "r");
+
+    if (file == NULL) return NULL;
+
+    fseek(file,0,SEEK_END);
+    int length=ftell(file);
+    fseek(file,0,SEEK_SET);
+
+    char *string = malloc(sizeof(char) * length);
+
+    char c;
+    int i = 0;
+    while((c = fgetc(file)) != EOF){
+        string[i] = c;
+        i++;
+    }
+    string[i-1]='\0';
+    fclose(file);
+    return string;
 
 }
 char* mysteryExplode(const char* str)
 {
     int n = strlen(str)-1;
     int nExplode = (n*(n+1))/2;
+    char src[n];
 
-    explode = malloc(nExplode*sizeof(char)+1);
-    int i,j,k;
-
-    for(i=0; i<n; i++){
-        for(j=0; j<=i; j++){
-            explode[k]=str[j];
-            k+=1;
-        }
+    char *explode = malloc(nExplode*sizeof(char)+1);
+    char c;
+    int i= 0;
+    while((c = str[i]) != '\0'){
+        src[i] = c;
+        /*strcat(src1,src);*/
+        strcat(explode,src);
+        i++;
     }
+    explode[strlen(explode)]='\0';
     return explode;
 }
 
